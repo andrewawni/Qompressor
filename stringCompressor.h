@@ -5,9 +5,11 @@ using std::string;
 
 class StringCompressor
 {
-public:
+private:
 	string decimalToBinaryString(int x, int nBits);
 	int binaryStringtoDecimal(string s);
-	string binaryStreamtoASCII(string encodedString);
+public:
+	string binaryStreamtoASCII(string encodedString); 
 	string asciitoBinaryStream(string asciiString);
 };
+
