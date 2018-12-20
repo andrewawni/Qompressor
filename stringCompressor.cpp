@@ -1,36 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <math.h>
-#include <algorithm>
+#include "stringCompressor.h"
 
-using std::string;
-
-using std::cout;
-using std::endl;
-
-using std::ofstream;
-using std::ifstream;
-
-string decimalToBinaryString();
-void exportBinaryStream(string encodedString, string filename);
-string readBinaryStream(string filename);
-int binaryStringtoDecimal(string s);
-
-int main()
-{
-	string encoded = "1010101010101010011011110101110111111001101";
-	cout << "Input: \t\t\t" << encoded << endl;
-	cout << "Exported Bytes:" << endl;
-	exportBinaryStream(encoded, "File.bin");
-
-	string x = readBinaryStream("File.bin");
-
-	cout << "\nEquality Status: " << (x == encoded) << endl; //Returns true if the stream is read as exported
-	return 0;
-}
-
-string decimalToBinaryString(int x, int nBits)
+string StringCompressor::decimalToBinaryString(int x, int nBits)
 {
 	//A function that converts a decimal value to a string of ASCII characters
 	//that represent that value in base 2 (binary) of nBits in length
@@ -54,7 +24,8 @@ string decimalToBinaryString(int x, int nBits)
 	return s;
 }
 
-int binaryStringtoDecimal(string s)
+
+int StringCompressor::binaryStringtoDecimal(string s)
 {
 	//A function that returns the decimal value of a binary string.
 	int value{0};
@@ -66,12 +37,11 @@ int binaryStringtoDecimal(string s)
 	return value;
 }
 
-void exportBinaryStream(string encodedString, string filename)
+
+string StringCompressor::binaryStreamtoASCII(string encodedString)
 {
 	//A function that exports the binary stream of instructions to a file
-	ofstream exportStream; //New output filestream
-	exportStream.open(filename); //Open the file
-
+	string ASCIIString;
 	string byteString; //Empty string to hold the stream
 
 	int counter = 1; //Counter to count the number of bytes exported
@@ -81,9 +51,9 @@ void exportBinaryStream(string encodedString, string filename)
 		byteString += encodedString[i]; //Append the bit
 		if (counter == 8 && i != encodedString.size() - 1) //If the byteString has 8 bits and it isn't the last byte
 		{
-			cout << byteString << endl; //Kept temporarily for debugging
+			//cout << byteString << endl; //Kept temporarily for debugging
 			int value = binaryStringtoDecimal(byteString); //Convert the binary byte to a decimal value
-			exportStream << (char) (value - 128); //Cast the value - 128 to prevent overflowing into a character.
+			ASCIIString.push_back((char) (value - 128)); //Cast the value - 128 to prevent overflowing into a character.
 			byteString.clear(); //Clear the string
 			counter = 0; // Reset the counter
 		}
@@ -123,9 +93,9 @@ void exportBinaryStream(string encodedString, string filename)
 				byteString += decimalToBinaryString(ignore, 3); //Append the 3 bit ignore value
 			}
 
-			cout << byteString << endl;
+			// << byteString << endl;
 			int value = binaryStringtoDecimal(byteString); //Convert the binarystring to a decimal value
-			exportStream << (char) (value - 128); //Export current byte
+			ASCIIString.push_back((char) (value - 128)); //Export current byte
 			byteString.clear();
 
 			if (counter == 6 || counter == 7 || counter == 8)
@@ -136,25 +106,25 @@ void exportBinaryStream(string encodedString, string filename)
 					byteString.push_back('0');
 
 				byteString += decimalToBinaryString(ignore, 3);
-				cout << byteString << endl;
+				//cout << byteString << endl;
 				int value = binaryStringtoDecimal(byteString);
-				exportStream << (char) (value - 128);
+				ASCIIString.push_back((char) (value - 128));
 				byteString.clear();
 			}
 		}
 
 		counter++; //Incerement the counter;
 	}
-		exportStream.close();
+		return ASCIIString;
 }
 
-string readBinaryStream(string filename)
+
+
+string StringCompressor::asciitoBinaryStream(string asciiString)
 {
 	string inputBinaryStream, binaryStream;
-	ifstream readStream; //Input file stream to read from the file
-	readStream.open(filename); //Open the file
 
-	readStream >> inputBinaryStream; //Read the whole ASCII String
+	inputBinaryStream = asciiString; //Read the whole ASCII String
 
 	string instructions;
 	for (int i = 0; i < inputBinaryStream.size(); i++)
@@ -164,18 +134,18 @@ string readBinaryStream(string filename)
 		binaryStream += instructions;
 	}
 
-	cout << endl << "Read Binary Stream:\t" << binaryStream << endl; //Prints the read binary stream
+	//cout << endl << "Read Binary Stream:\t" << binaryStream << endl; //Prints the read binary stream
 	//e.g. the binary stream before the final bits are ignored.
 
 	string bitsToIgnore; //Number of bits to ignore in binary
 	for (int i = binaryStream.size() - 3; i < binaryStream.size(); i++)
 		bitsToIgnore.push_back(binaryStream[i]); //Read it from the binary stream
 	int numberOfBitstoIgnore = binaryStringtoDecimal(bitsToIgnore); //Convert to decimal
-	cout << "Ignored Bytes:\t " << numberOfBitstoIgnore << endl; //Print it
+	//cout << "Ignored Bytes:\t " << numberOfBitstoIgnore << endl; //Print it
 
 	for (int i = 0; i < numberOfBitstoIgnore + 3; i++)
 		binaryStream.pop_back(); //Delete the last nBits + the 3 bits that represent that ignore value
 
-	cout << "Actual Binary Stream:\t" << binaryStream; //Print the binary stream after being ignored.
+	//cout << "Actual Binary Stream:\t" << binaryStream; //Print the binary stream after being ignored.
 	return binaryStream; //Return the new stream
 }
