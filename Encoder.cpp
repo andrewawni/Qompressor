@@ -38,6 +38,21 @@ void Encoder::printImageBin()
 	}
 }
 
+void Encoder::printImageAscii(){
+	for (int h = 0; h < int(image.size()); h++)
+	{
+		string PxlRow = "";
+		for (int w = 0; w < int(image[h].size()); w++)
+		{
+			PxlRow += color2bin[image[h][w].r];
+			PxlRow += color2bin[image[h][w].g];
+			PxlRow += color2bin[image[h][w].b];
+			//PxlRow += (w == int(image[h].size()) - 1 ? "\n" : "");
+		}
+		fileTXT << stringCompressor.binaryStreamtoASCII(PxlRow) << std::endl;
+	}
+}
+
 void Encoder::printImagePxl()
 {
 	for (int h = 0; h < int(image.size()); h++)
@@ -155,7 +170,7 @@ void Encoder::binaryRepForCode(std::string binStr, Node *node)
 	{
 		//std::cout << node->code << " -> " << binStr << "    (" << node->count << ")" << std::endl;
 
-		fileTXT << node->code << " " << binStr << std::endl;
+		fileTXT << node->code << " " << stringCompressor.binaryStreamtoASCII(binStr) << std::endl;
 
 		// save the result
 		color2bin[node->code] = binStr;
