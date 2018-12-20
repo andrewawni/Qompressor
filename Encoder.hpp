@@ -3,6 +3,8 @@
 #include "opencv2/core/core.hpp"
 #include "opencv2/opencv.hpp"
 
+#include "../include/stringCompressor.hpp"
+
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -41,6 +43,9 @@ struct cmp
 
 class Encoder {
 private:
+	
+    StringCompressor stringCompressor;
+
     ofstream fileTXT;
 
     // image pixels RGB in 2D array
@@ -79,8 +84,11 @@ public:
     // 2D image in binary
     void printImageBin();    
 
-    // print 2D image pixels in file - path
+    // print 2D image pixels
     void printImagePxl();
+
+    // print 2D image pixels in ascii (compressed)
+    void printImageAscii();
 
     ~Encoder();
 
