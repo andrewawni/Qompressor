@@ -1,0 +1,8 @@
+#include "../include/Encoder.hpp"
+using namespace std;
+
+int main()
+{
+    Encoder c("image.jpeg", "encoded_image.txt");
+    c.printImagePxl();
+}
