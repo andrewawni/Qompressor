@@ -104,7 +104,8 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen_File"/>
-    <addaction name="actionSave_Compressed_File"/>
+    <addaction name="actionExtract_File"/>
+    <addaction name="actionView_File"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -113,7 +114,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen_File">
    <property name="text">
-    <string>Open File</string>
+    <string>Compress File</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -131,11 +132,6 @@
     <string>Contribute</string>
    </property>
   </action>
-  <action name="actionSave_Compressed_File">
-   <property name="text">
-    <string>Save Compressed File</string>
-   </property>
-  </action>
   <action name="actionCredits">
    <property name="text">
     <string>Credits</string>
@@ -144,6 +140,16 @@
   <action name="actionForce_Dark_Theme">
    <property name="text">
     <string>Force Dark Theme</string>
+   </property>
+  </action>
+  <action name="actionExtract_File">
+   <property name="text">
+    <string>Decompress File</string>
+   </property>
+  </action>
+  <action name="actionView_File">
+   <property name="text">
+    <string>View File</string>
    </property>
   </action>
  </widget>

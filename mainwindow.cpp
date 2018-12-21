@@ -1,12 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <qfiledialog.h>
+
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QGraphicsPixmapItem>
 #include <QTextStream>
+#include <QFileInfo>
+
+#include "TextEncoder.h"
+#include "TextDecoder.h"
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -21,6 +28,7 @@ MainWindow::~MainWindow()
 {
   delete ui;
 }
+
 void MainWindow::loadFileIntoLabel(QString filePath)
 {
   QFile openedFile(filePath);
@@ -35,16 +43,63 @@ void MainWindow::loadFileIntoLabel(QString filePath)
 
 void MainWindow::on_actionOpen_File_triggered()
 {
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
-  QMessageBox::information(this, tr("File Path"), filePath);
+  string inputFilePath;
+
+  QMessageBox::information(this, tr("Compress File"), "Choose a file to compress");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  if (filePath.size() == 0) return;
+
+  QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to decompress it.");
+  MainWindow::loadFileIntoLabel(filePath);
+  inputFilePath = filePath.toStdString();
+
+  Encoder encoder;
+  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Compressed File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*.*)");
+  if (saveFilePath.size() == 0) return;
+
+  QString extension;
+  for (int i = saveFilePath.size() - 1; i > saveFilePath.size() - 5; i--)
+      extension += saveFilePath[i];
+
+  if (!(extension == "pmq.")) saveFilePath += ".qmp";
+
+  QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
+  encoder.encodeStringFromFile(inputFilePath, saveFilePath.toStdString());
+
+  QFileInfo input(QString::fromUtf8(inputFilePath.c_str()));
+  QFileInfo output(saveFilePath);
+
+  QMessageBox::information(this, tr("Comparison"), "Old File Size:   " + QString::number(input.size()) + " Bytes\nNew File Size:  " + QString::number(output.size()) + " Bytes");
+
+
+}
+
+
+void MainWindow::on_actionExtract_File_triggered()
+{
+  string inputFilePath;
+  QMessageBox::information(this, tr("Decompress File"), "Choose a compressed file to decompress");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*.*)");
+  if (filePath.size() == 0) return;
+
+  QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to decompress it.");
+  //MainWindow::loadFileIntoLabel(filePath);
+  inputFilePath = filePath.toStdString();
+
+  Decoder decoder;
+  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Decompressed File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  if (saveFilePath.size() == 0) return;
+
+  QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
+  decoder.decodeTextInFile(inputFilePath, saveFilePath.toStdString());
+}
+
+void MainWindow::on_actionView_File_triggered()
+{
+  QString filePath = QFileDialog::getOpenFileName(this, tr("View File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
   MainWindow::loadFileIntoLabel(filePath);
 }
 
-void MainWindow::on_actionSave_Compressed_File_triggered()
-{
-  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
-  QMessageBox::information(this, tr("File Path"), saveFilePath);
-}
 
 void MainWindow::on_actionAbout_triggered()
 {
@@ -58,17 +113,15 @@ void MainWindow::on_actionCredits_triggered()
 
 void MainWindow::on_actionContribute_triggered()
 {
-  QDesktopServices::openUrl(QUrl("https://github.com/Satharus"));
+  QDesktopServices::openUrl(QUrl("https://github.com/andrewawni/Qompressor"));
 }
-
 
 void MainWindow::on_actionForce_Dark_Theme_triggered()
 {
       QFile f(":qdarkstyle/style.qss");
-      if (!f.exists())
-      {
-          printf("Unable to set stylesheet, file not found\n");
-      }
+
+      if (!f.exists())  printf("Unable to set stylesheet, file not found\n");
+
       else
       {
           f.open(QFile::ReadOnly | QFile::Text);
