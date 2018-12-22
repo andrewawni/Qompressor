@@ -20,7 +20,7 @@
    <string>Qompressor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../build-Compress-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc">
+   <iconset resource="../build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc">
     <normaloff>:/Artwork/Logo.png</normaloff>:/Artwork/Logo.png</iconset>
   </property>
   <property name="autoFillBackground">
@@ -106,6 +106,7 @@
     <addaction name="actionOpen_File"/>
     <addaction name="actionExtract_File"/>
     <addaction name="actionView_File"/>
+    <addaction name="actionQuit"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOptions"/>
@@ -152,10 +153,15 @@
     <string>View File</string>
    </property>
   </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../build-Compress-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc"/>
+  <include location="../build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

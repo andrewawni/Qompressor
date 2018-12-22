@@ -129,3 +129,8 @@ void MainWindow::on_actionForce_Dark_Theme_triggered()
           qApp->setStyleSheet(ts.readAll());
       }
 }
+
+void MainWindow::on_actionQuit_triggered()
+{
+  QApplication::quit();
+}
