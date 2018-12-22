@@ -50,7 +50,7 @@ void MainWindow::on_actionOpen_File_triggered()
   if (filePath.size() == 0) return;
 
   QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to compress it.");
-  MainWindow::loadFileIntoLabel(filePath);
+//  MainWindow::loadFileIntoLabel(filePath);
   inputFilePath = filePath.toStdString();
 
   Encoder encoder;
