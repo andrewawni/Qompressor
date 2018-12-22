@@ -46,7 +46,7 @@ void MainWindow::on_actionOpen_File_triggered()
   string inputFilePath;
 
   QMessageBox::information(this, tr("Compress File"), "Choose a file to compress");
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.bmp)");
   if (filePath.size() == 0) return;
 
   QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to compress it.");
@@ -54,7 +54,7 @@ void MainWindow::on_actionOpen_File_triggered()
   inputFilePath = filePath.toStdString();
 
   Encoder encoder;
-  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Compressed File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*.*)");
+  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Compressed File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*)");
   if (saveFilePath.size() == 0) return;
 
   QString extension;
