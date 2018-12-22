@@ -1,9 +1,19 @@
+#include <fstream>
 #include <iostream>
+
 #include <string>
 #include <map>
-#include <fstream>
 
-using namespace std;
+using std::string;
+using std::map;
+using std::pair;
+
+using std::ifstream;
+using std::ofstream;
+
+using std::cout;
+using std::endl;
+
 
 class HuffmanTree
 {

@@ -32,6 +32,10 @@ private slots:
 
   void on_actionQuit_triggered();
 
+  void on_actionHelp_2_triggered();
+
+  void on_actionClose_Viewed_File_triggered();
+
 private:
   Ui::MainWindow *ui;
   void loadFileIntoLabel(QString filepath);

@@ -125,7 +125,7 @@ string StringCompressor::asciitoBinaryStream(string asciiString)
     string inputBinaryStream, binaryStream;
 
     inputBinaryStream = asciiString; //Read the whole ASCII String
-
+//    std::cout << inputBinaryStream << std::endl;
     string instructions;
     for (int i = 0; i < inputBinaryStream.size(); i++)
     {
@@ -133,7 +133,7 @@ string StringCompressor::asciitoBinaryStream(string asciiString)
         instructions = decimalToBinaryString((int) (inputBinaryStream[i] + 128), 8);
         binaryStream += instructions;
     }
-
+//    std::cout << binaryStream << std::endl;
     //cout << endl << "Read Binary Stream:\t" << binaryStream << endl; //Prints the read binary stream
     //e.g. the binary stream before the final bits are ignored.
 
@@ -142,7 +142,7 @@ string StringCompressor::asciitoBinaryStream(string asciiString)
         bitsToIgnore.push_back(binaryStream[i]); //Read it from the binary stream
     int numberOfBitstoIgnore = binaryStringtoDecimal(bitsToIgnore); //Convert to decimal
     //cout << "Ignored Bytes:\t " << numberOfBitstoIgnore << endl; //Print it
-
+//    std::cout << binaryStream << std::endl;
     for (int i = 0; i < numberOfBitstoIgnore + 3; i++)
         binaryStream.pop_back(); //Delete the last nBits + the 3 bits that represent that ignore value
 

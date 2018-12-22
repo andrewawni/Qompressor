@@ -1,12 +1,24 @@
-#include<iostream>
 #include <fstream>
-#include<queue>
-#include<vector>
-#include<string>
-#include<map>
+#include <iostream>
+
+#include <queue>
+#include <vector>
+#include <string>
+#include <map>
+
 #include "stringCompressor.h"
 
-using namespace std;
+using std::ifstream;
+using std::ofstream;
+
+using std::cout;
+using std::endl;
+
+using std::map;
+using std::string;
+using std::priority_queue;
+using std::vector;
+
 
 class node
 {
