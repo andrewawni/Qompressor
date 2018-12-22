@@ -160,6 +160,6 @@ string Decoder::decodeTextInFile(string fileLocation, string outputFileLocation)
 //	  cout << it->first << " => " << it->second << endl;
 
 	ofstream decodedFile(outputFileLocation);
-	decodedFile << decodeText(huffmanMapCodes, encodedText) << endl;
+	decodedFile << decodeText(huffmanMapCodes, encodedText);
 	return decodeText(huffmanMapCodes, encodedText);
 }
