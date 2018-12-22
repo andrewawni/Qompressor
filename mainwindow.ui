@@ -71,7 +71,7 @@
      <bool>true</bool>
     </property>
     <property name="placeholderText">
-     <string>Welcome to Qompressor!</string>
+     <string>                                           Welcome to Qompressor!</string>
     </property>
    </widget>
   </widget>
