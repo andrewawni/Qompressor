@@ -25,25 +25,25 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 {
 	StringCompressor compressor;
 	string inpuText;
-	ifstream uncompressedFile;
-	uncompressedFile.open(inputPath);
-	if (uncompressedFile.is_open())
-	{
-		string line;
-		while (getline(uncompressedFile, line))
-		{
-			inpuText += line;
-			inpuText += " ";
-		}
+    ifstream uncompressedFile;
+    uncompressedFile.open(inputPath);
+    if (uncompressedFile.is_open())
+    {
+        char c;
+        while (uncompressedFile.get(c))
+        {
+            inpuText.push_back(c);
+        }
 	}
 
 	else
 	{
-		cout << "we couldn't open the file" << endl;
+        cout << "Couldn't open the file" << endl;
 		return 0;
-	}
+    }
 	uncompressedFile.close();
-	// priority queue custom compare function
+    // priority queue custom compare function
+//    cout << inpuText;
 	struct compare
 	{
 
@@ -58,8 +58,8 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 	string encodedBits;
 	int textLen = inpuText.length();
 
-	cout << "Text : " << inpuText << endl;
-	cout << "Number of text bits : " << textLen << endl;
+//	cout << "Text : " << inpuText << endl;
+//	cout << "Number of text bits : " << textLen << endl;
 
 	//Getting frequencies of chars
 	for (int i = 0; i < inpuText.length(); i++)
@@ -81,7 +81,7 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 		tmp.clear();
 	}
 
-	cout << "Tree : " << endl;
+//	cout << "Tree : " << endl;
 	//Contructing Huffman Tree
 	int n = HuffTree.size();
 	for (int i = 0; i < n - 1; i++)
@@ -93,12 +93,12 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 		node *new_node = new node(n1->m_char + n2->m_char, n1->freq + n2->freq);
 		new_node->left = n1;
 		new_node->right = n2;
-		cout << new_node->freq << " " << new_node->m_char << endl;
-		cout << "Left->" << new_node->left->m_char << new_node->left->freq << "\t" <<
-		     "Right->" << new_node->right->m_char << new_node->right->freq << endl;
+//		cout << new_node->freq << " " << new_node->m_char << endl;
+//		cout << "Left->" << new_node->left->m_char << new_node->left->freq << "\t" <<
+//		     "Right->" << new_node->right->m_char << new_node->right->freq << endl;
 		HuffTree.push(new_node);
 	}
-	cout << "Map : " << endl;
+//	cout << "Map : " << endl;
 
 	// Traversing Huffman Tree
 	ConstructMap(HuffTree.top(), "");
@@ -110,19 +110,21 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 
 	//Writing encoded bits to a file
 	//compressedFile<<encodedBits<<endl;
-	compressedFile << compressor.binaryStreamtoASCII(encodedBits) << endl;
-	compressedFile << "END" << endl;
+    compressedFile << compressor.binaryStreamtoASCII(encodedBits);
+    compressedFile << "END" << endl;;
 
 	//Writing encoding map to a file
 	for (std::map<char, string>::iterator it = codeMap.begin(); it != codeMap.end(); ++it)
 	{
-		compressedFile << it->first << endl;
-		//compressedFile<<it->second<<endl;
-		compressedFile << compressor.binaryStreamtoASCII(it->second) << endl;
-		cout << it->first << " => " << it->second << '\n';
+        if (it->first != '\n')  compressedFile << it->first << '\t';
+        else compressedFile << "\\n" << '\t';
+        compressedFile << it->second <<endl;
+        //compressedFile << compressor.binaryStreamtoASCII(it->second) << endl;
+//        cout << it->first << " => " << it->second << '\n';
 	}
+
 	compressedFile.close();
-	cout << "encoded Bits : " << endl << encodedBits << endl;
-	cout << "Number of encoded bits : " << encodedBits.length() << endl;
+//	cout << "encoded Bits : " << endl << encodedBits << endl;
+//	cout << "Number of encoded bits : " << encodedBits.length() << endl;
 	return encodedBits;
 }

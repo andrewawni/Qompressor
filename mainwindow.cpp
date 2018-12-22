@@ -46,10 +46,10 @@ void MainWindow::on_actionOpen_File_triggered()
   string inputFilePath;
 
   QMessageBox::information(this, tr("Compress File"), "Choose a file to compress");
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
   if (filePath.size() == 0) return;
 
-  QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to decompress it.");
+  QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to compress it.");
   MainWindow::loadFileIntoLabel(filePath);
   inputFilePath = filePath.toStdString();
 
@@ -79,15 +79,14 @@ void MainWindow::on_actionExtract_File_triggered()
 {
   string inputFilePath;
   QMessageBox::information(this, tr("Decompress File"), "Choose a compressed file to decompress");
-  QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*.*)");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*)");
   if (filePath.size() == 0) return;
 
   QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to decompress it.");
-  //MainWindow::loadFileIntoLabel(filePath);
   inputFilePath = filePath.toStdString();
 
   Decoder decoder;
-  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Decompressed File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Decompressed File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.bmp)");
   if (saveFilePath.size() == 0) return;
 
   QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
@@ -96,7 +95,7 @@ void MainWindow::on_actionExtract_File_triggered()
 
 void MainWindow::on_actionView_File_triggered()
 {
-  QString filePath = QFileDialog::getOpenFileName(this, tr("View File"), QDir::homePath(), "All Files (*.*);;Text Files (*.txt);;Images(*.png *.bmp *.jpg)");
+  QString filePath = QFileDialog::getOpenFileName(this, tr("View File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.bmp)");
   MainWindow::loadFileIntoLabel(filePath);
 }
 
@@ -133,4 +132,14 @@ void MainWindow::on_actionForce_Dark_Theme_triggered()
 void MainWindow::on_actionQuit_triggered()
 {
   QApplication::quit();
+}
+
+void MainWindow::on_actionHelp_2_triggered()
+{
+    QMessageBox::information(this, tr("How to Use"), "Use the file menu to choose the desired action.");
+}
+
+void MainWindow::on_actionClose_Viewed_File_triggered()
+{
+    ui->textEdit->setText("");
 }

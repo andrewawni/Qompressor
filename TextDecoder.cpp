@@ -1,7 +1,6 @@
 #include "TextDecoder.h"
 #include "stringCompressor.h"
 
-
 HuffmanTree::HuffmanTree(char character)
 {
 	this->character = character;
@@ -106,50 +105,59 @@ string Decoder::decodeTextInFile(string fileLocation, string outputFileLocation)
 	pair<char, string> huffmanMapPair;
 	int counter = 0;
 	bool firstLine = true;
-	string encodedText, readLine, charCode;
+    string encodedText, readLine, charCode;
 	ifstream readHuffmanFile;
 	readHuffmanFile.open(fileLocation);
 	if (readHuffmanFile.is_open())
 	{
-		while (getline(readHuffmanFile, readLine))
-		{
-			if (firstLine)
-			{
-				if (readLine == "END")
-				{
-					firstLine = false;
-					continue;
-				}
-				encodedText += readLine;
-			}
+        char c;
+        while (readHuffmanFile.get(c))
+        {
+            encodedText.push_back(c);
+            int txtSz = encodedText.size();
+            if (encodedText[txtSz - 1] == 'D' && encodedText[txtSz - 2] == 'N' && encodedText[txtSz - 3] == 'E') break;
+        }
 
-			else
-			{
-				counter++;
-				if (counter == 1) huffmanMapPair.first = readLine[0];
-				else if (counter == 2)
-				{
-					huffmanMapPair.second = compressor.asciitoBinaryStream(readLine);
-					//huffmanMapPair.second = readLine;
-					huffmanMapCodes.insert(huffmanMapPair);
-					counter = 0;
-				}
-			}
+        for (int i = 0; i < 3; i++)
+        {
+            encodedText.pop_back();
+        }
 
-		}
-	}
+        while (getline(readHuffmanFile, readLine))
+        {
+            int p = 0;
+            string keyString, valueString;
+            keyString += readLine[0];
+            for (p = 1; p < readLine.size(); p++)
+            {
+                if (readLine[p] == '\t') break;
+                keyString += readLine[p];
+            }
 
-	else cout << "we couldn't open the file" << endl;
-	readHuffmanFile.close();
+            if (keyString == "\\n") keyString = "\n";
 
-// if you want to see the map and encoded string to check uncomment the next commented lines
-	encodedText = compressor.asciitoBinaryStream(encodedText);
-	cout << encodedText << endl;
+            for (int i = p + 1; i < readLine.size(); i++)
+                valueString.push_back(readLine[i]);
+
+            huffmanMapPair.first = keyString[0];
+            huffmanMapPair.second = valueString;
+            huffmanMapCodes.insert(huffmanMapPair);
+
+        }
+    }
+
+    else cout << "Couldn't open the file" << endl;
+
+    readHuffmanFile.close();
+//    cout << encodedText << endl;
+
+    encodedText = compressor.asciitoBinaryStream(encodedText);
+//	cout << encodedText << endl;
 
 	map<char, string>::iterator it;
 
-	for (it = huffmanMapCodes.begin(); it != huffmanMapCodes.end(); it++)
-	  cout << it->first << " => " << it->second << endl;
+//	for (it = huffmanMapCodes.begin(); it != huffmanMapCodes.end(); it++)
+//	  cout << it->first << " => " << it->second << endl;
 
 	ofstream decodedFile(outputFileLocation);
 	decodedFile << decodeText(huffmanMapCodes, encodedText) << endl;
