@@ -1,5 +1,4 @@
 #include "TextDecoder.h"
-#include "stringCompressor.h"
 
 HuffmanTree::HuffmanTree(char character)
 {

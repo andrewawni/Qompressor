@@ -2,8 +2,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/core/core.hpp"
 #include "opencv2/opencv.hpp"
-
-#include "../src/stringCompressor.cpp"
+#include "stringCompressor.h"
 
 #include <iostream>
 #include <vector>
@@ -41,7 +40,7 @@ struct cmp
 	}
 };
 
-class Encoder {
+class ImageEncoder {
 private:
 	
     StringCompressor stringCompressor;
@@ -76,7 +75,7 @@ private:
     void clear(Node * node);
 public:
 
-    Encoder(string imagePath, string outputPath);
+    ImageEncoder(string imagePath, string outputPath);
 
     // 2D image in binary
     void printImageBin();    
@@ -92,7 +91,7 @@ public:
     // dfs on tree to get code's binary representation
     void binaryRepForCode(std::string binStr, Node * node, bool printMap);
 
-    ~Encoder();
+    ~ImageEncoder();
 
 };
 

@@ -20,7 +20,7 @@
    <string>Qompressor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../Qompressor (copy)/build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc">
+   <iconset resource="../../build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc">
     <normaloff>:/Artwork/Logo.png</normaloff>:/Artwork/Logo.png</iconset>
   </property>
   <property name="autoFillBackground">
@@ -61,7 +61,7 @@
       <x>0</x>
       <y>0</y>
       <width>500</width>
-      <height>430</height>
+      <height>379</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -168,7 +168,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../../Qompressor (copy)/build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc"/>
+  <include location="../../build-Qompressor-Desktop_Qt_5_10_1_GCC_64bit-Debug/qmake_qmake_immediate.qrc"/>
  </resources>
  <connections/>
 </ui>

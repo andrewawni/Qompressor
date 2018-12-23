@@ -28,13 +28,21 @@ SOURCES += \
         mainwindow.cpp \
     stringCompressor.cpp \
     TextDecoder.cpp \
-    TextEncoder.cpp
+    TextEncoder.cpp \
+    BitmapImageGenerator.cpp \
+    ImageDecoder.cpp \
+    MinHeap.cpp \
+    ImageEncoder.cpp
 
 HEADERS += \
         mainwindow.h \
     stringCompressor.h \
     TextEncoder.h \
-    TextDecoder.h
+    TextDecoder.h \
+    BitmapImageGenerator.h \
+    ImageDecoder.h \
+    MinHeap.h \
+    ImageEncoder.h
 
 FORMS += \
         mainwindow.ui
@@ -45,6 +53,6 @@ RESOURCES += Artwork/Logo.png
 DISTFILES += \
     Artwork/Logo.png
 
-#INCLUDEPATH += /usr/include/opencv2
+INCLUDEPATH += /usr/include/opencv2
 
-#LIBS += -lopencv_core -lopencv_imgcodecs -lopencv_highgui
+LIBS += -lopencv_core -lopencv_imgcodecs -lopencv_highgui

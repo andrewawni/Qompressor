@@ -1,10 +1,10 @@
-#include "../include/ImageEncoder.h"
+#include "ImageEncoder.h"
 
-Encoder::Encoder(string imagePath, string outputPath)
+ImageEncoder::ImageEncoder(string imagePath, string outputPath)
 {
 	cv::Mat file;
 
-	file = cv::imread(imagePath, CV_LOAD_IMAGE_COLOR);
+	file = cv::imread(imagePath, cv::IMREAD_COLOR);
 
 	if (!file.data)
 	{
@@ -26,7 +26,7 @@ Encoder::Encoder(string imagePath, string outputPath)
 }
 
 
-void Encoder::printImageBin()
+void ImageEncoder::printImageBin()
 {
 	for (int h = 0; h < int(image.size()); h++)
 	{
@@ -40,7 +40,7 @@ void Encoder::printImageBin()
 	}
 }
 
-void Encoder::printImageAscii(){
+void ImageEncoder::printImageAscii(){
 	for (int h = 0; h < int(image.size()); h++)
 	{
 		string PxlRow = "";
@@ -58,7 +58,7 @@ void Encoder::printImageAscii(){
 	}
 }
 
-void Encoder::printImagePxl()
+void ImageEncoder::printImagePxl()
 {
 	for (int h = 0; h < int(image.size()); h++)
 	{
@@ -70,7 +70,7 @@ void Encoder::printImagePxl()
 	}
 }
 
-vector<vector<Pixel>> Encoder::readImage(cv::Mat image)
+vector<vector<Pixel>> ImageEncoder::readImage(cv::Mat image)
 {
 
 	std::vector<std::vector<Pixel>> ret(image.rows, std::vector<Pixel>(image.cols));
@@ -88,7 +88,7 @@ vector<vector<Pixel>> Encoder::readImage(cv::Mat image)
 }
 
 // node constructor function
-Node *Encoder::createNode(int count, int code, Node *left, Node *right)
+Node *ImageEncoder::createNode(int count, int code, Node *left, Node *right)
 {
 	Node *node = (Node *)malloc(sizeof(struct Node));
 	node->count = count;
@@ -98,7 +98,7 @@ Node *Encoder::createNode(int count, int code, Node *left, Node *right)
 	return node;
 }
 
-Node *Encoder::buildTree(std::vector<std::vector<Pixel>> &image)
+Node *ImageEncoder::buildTree(std::vector<std::vector<Pixel>> &image)
 {
 
 	// frequency std::map
@@ -154,13 +154,13 @@ Node *Encoder::buildTree(std::vector<std::vector<Pixel>> &image)
 }
 
 // checks if node is leaf
-bool Encoder::isLeaf(Node *node)
+bool ImageEncoder::isLeaf(Node *node)
 {
 	return (node->left == NULL && node->right == NULL);
 }
 
 // pre-order traversing
-void Encoder::traverse(Node *node)
+void ImageEncoder::traverse(Node *node)
 {
 	//std::cout << node->code << ' ' << node->count << std::endl;
 	if (isLeaf(node))
@@ -169,7 +169,7 @@ void Encoder::traverse(Node *node)
 	traverse(node->right);
 }
 
-void Encoder::binaryRepForCode(std::string binStr, Node *node, bool printMap)
+void ImageEncoder::binaryRepForCode(std::string binStr, Node *node, bool printMap)
 {
 	if (isLeaf(node))
 	{
@@ -187,7 +187,7 @@ void Encoder::binaryRepForCode(std::string binStr, Node *node, bool printMap)
 	binaryRepForCode(binStr + "1", node->right, printMap);
 }
 
-void Encoder::clear(Node * node)
+void ImageEncoder::clear(Node * node)
 {
 	if(isLeaf(node)){
 		delete node;
@@ -199,11 +199,11 @@ void Encoder::clear(Node * node)
 }
 
 
-Node * Encoder::getRoot(){
+Node * ImageEncoder::getRoot(){
 	return root;	
 }
 
-Encoder::~Encoder()
+ImageEncoder::~ImageEncoder()
 {
 	fileTXT.close();
 	clear(root);
