@@ -1,4 +1,6 @@
+
 #include "BitmapImageGenerator.h"
+
 
 BitmapImageGenerator::BitmapImageGenerator() {
 
@@ -78,5 +80,6 @@ unsigned char* BitmapImageGenerator::createBitmapInfoHeader(int height, int widt
 }
 
 BitmapImageGenerator::~BitmapImageGenerator() {
+
 
 }

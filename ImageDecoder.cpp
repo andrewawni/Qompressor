@@ -4,6 +4,7 @@
 #include "ImageDecoder.h"
 #include "stringCompressor.cpp"
 
+
 ImageDecoder::ImageDecoder()
 {
     HuffmanTree = new MinHeap();
@@ -119,3 +120,4 @@ void ImageDecoder::Decode(string inputFileName, string outputFileName)
 ImageDecoder::~ImageDecoder()
 {
 }
+
