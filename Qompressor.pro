@@ -45,6 +45,6 @@ RESOURCES += Artwork/Logo.png
 DISTFILES += \
     Artwork/Logo.png
 
-INCLUDEPATH += /usr/include/opencv2
+#INCLUDEPATH += /usr/include/opencv2
 
-LIBS += -lopencv_core -lopencv_imgcodecs -lopencv_highgui
+#LIBS += -lopencv_core -lopencv_imgcodecs -lopencv_highgui
