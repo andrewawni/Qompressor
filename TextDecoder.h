@@ -1,8 +1,8 @@
 #include <fstream>
 #include <iostream>
-
 #include <string>
 #include <map>
+#include "stringCompressor.h"
 
 using std::string;
 using std::map;

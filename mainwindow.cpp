@@ -12,7 +12,8 @@
 
 #include "TextEncoder.h"
 #include "TextDecoder.h"
-
+#include "ImageEncoder.h"
+#include "ImageDecoder.h"
 
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -41,7 +42,6 @@ void MainWindow::loadFileIntoLabel(QString filePath)
 
 void MainWindow::on_actionOpen_File_triggered()
 {
-    string inputFilePath;
 
     QMessageBox::information(this, tr("Compress File"), "Choose a file to compress");
     QString filePath = QFileDialog::getOpenFileName(this, tr("Compress File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.bmp)");
@@ -51,48 +51,73 @@ void MainWindow::on_actionOpen_File_triggered()
         return;
     }
 
+    QString inputExtension;
+    for (int i = filePath.size() - 1; i > filePath.size() - 5; i--)
+        inputExtension += filePath[i];
+
+
+
+    string inputFilePath;
     QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to compress it.");
     inputFilePath = filePath.toStdString();
 
-    Encoder encoder;
-    QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Compressed File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*)");
+    QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Compressed File"), QDir::homePath(), "Compressed Bitmap and Text Files (*.qmp *.qmt);;All Files (*)");
     if (saveFilePath.size() == 0)
     {
         QMessageBox::information(this, tr("Failed"), "Failed to save file.");
         return;
     }
 
+
+
     QString extension;
     for (int i = saveFilePath.size() - 1; i > saveFilePath.size() - 5; i--)
         extension += saveFilePath[i];
 
-    if (!(extension == "pmq.")) saveFilePath += ".qmp";
 
-    QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
-    encoder.encodeStringFromFile(inputFilePath, saveFilePath.toStdString());
+    if (inputExtension == "pmb.")
+    {
+        if (!(extension == "pmq.")) saveFilePath += ".qmp";
+        ImageEncoder encoder(inputFilePath, saveFilePath.toStdString());
+        encoder.binaryRepForCode("", encoder.getRoot(), true);
+        encoder.printImageAscii();
+    }
+
+    else
+    {
+        if (!(extension == "tmq.")) saveFilePath += ".qmt";
+
+        Encoder encoder;
+        encoder.encodeStringFromFile(inputFilePath, saveFilePath.toStdString());
+    }
 
     QFileInfo input(QString::fromUtf8(inputFilePath.c_str()));
     QFileInfo output(saveFilePath);
 
+    QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
     QMessageBox::information(this, tr("Comparison"), "Old File Size:   " + QString::number(input.size()) + " Bytes\nNew File Size:  " + QString::number(output.size()) + " Bytes");
+
 }
 
 
 void MainWindow::on_actionExtract_File_triggered()
 {
     QMessageBox::information(this, tr("Decompress File"), "Choose a compressed file to decompress");
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "Compressed Files (*.qmp);;All Files (*)");
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(), "Compressed Bitmap and Text Files (*.qmp *.qmt);;All Files (*)");
     if (filePath.size() == 0)
     {
         QMessageBox::information(this, tr("Failed"), "Failed to open file.");
         return;
     }
 
+    QString inputExtension;
+    for (int i = filePath.size() - 1; i > filePath.size() - 5; i--)
+        inputExtension += filePath[i];
+
     string inputFilePath;
     QMessageBox::information(this, tr("Successful"), "File opened successfully, please choose where to decompress it.");
     inputFilePath = filePath.toStdString();
 
-    Decoder decoder;
     QString saveFilePath = QFileDialog::getSaveFileName(this, tr("Save Decompressed File"), QDir::homePath(), "All Files (*);;Text Files (*.txt);;Images(*.bmp)");
     if (saveFilePath.size() == 0)
     {
@@ -100,8 +125,21 @@ void MainWindow::on_actionExtract_File_triggered()
         return;
     }
 
+    cout << "STR" << inputExtension.toStdString();
+
+    if (inputExtension == "pmq.")
+    {
+        ImageDecoder* decoder = new ImageDecoder();
+        decoder->Decode(inputFilePath, saveFilePath.toStdString());
+    }
+
+    else
+    {
+        Decoder decoder;
+        decoder.decodeTextInFile(inputFilePath, saveFilePath.toStdString());
+    }
+
     QMessageBox::information(this, tr("File saved successfully"),"File saved to " + saveFilePath);
-    decoder.decodeTextInFile(inputFilePath, saveFilePath.toStdString());
 }
 
 void MainWindow::on_actionView_File_triggered()

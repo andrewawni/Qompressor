@@ -1,4 +1,5 @@
-#include "../include/MinHeap.hpp"
+#include "MinHeap.h"
+
 
 MinHeap::MinHeap() {
     m_root = new MinHeapNode();
@@ -75,3 +76,4 @@ MinHeapNode* MinHeap::GetRoot()
 MinHeap::~MinHeap() {
 
 }
+

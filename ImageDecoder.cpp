@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "../include/ImageDecoder.hpp"
-#include "../include/stringCompressor.h"
+#include "ImageDecoder.h"
+#include "stringCompressor.cpp"
+
 
 ImageDecoder::ImageDecoder()
 {
@@ -119,3 +120,4 @@ void ImageDecoder::Decode(string inputFileName, string outputFileName)
 ImageDecoder::~ImageDecoder()
 {
 }
+

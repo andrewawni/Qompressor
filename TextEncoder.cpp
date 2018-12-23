@@ -1,6 +1,5 @@
 #include "TextEncoder.h"
 
-
 node::node(string p_char, int p_freq)
 {
 	freq = p_freq;
