@@ -45,7 +45,6 @@ void HuffmanTree::insertNode(char character, string code)
 				ptr->leftNode = node;
 				ptr = ptr->leftNode;
 			}
-
 			else ptr = ptr->leftNode;
 		}
 
@@ -58,7 +57,6 @@ void HuffmanTree::insertNode(char character, string code)
 				ptr = ptr->rightNode;
 
 			}
-
 			else ptr = ptr->rightNode;
 		}
 	}
@@ -103,49 +101,46 @@ string Decoder::decodeTextInFile(string fileLocation, string outputFileLocation)
 	StringCompressor compressor;
 	map<char, string> huffmanMapCodes;
 	pair<char, string> huffmanMapPair;
-	int counter = 0;
-	bool firstLine = true;
-    string encodedText, readLine, charCode;
+	string encodedText, readLine, charCode;
 	ifstream readHuffmanFile;
 	readHuffmanFile.open(fileLocation);
 	if (readHuffmanFile.is_open())
 	{
-        char c;
-        while (readHuffmanFile.get(c))
-        {
-            encodedText.push_back(c);
-            int txtSz = encodedText.size();
-            if (encodedText[txtSz - 1] == 'D' && encodedText[txtSz - 2] == 'N' && encodedText[txtSz - 3] == 'E') break;
-        }
+	    //Reading the binarystream
+	  char c;
+	  while (readHuffmanFile.get(c)) //Read the file character by character.
+	  {
+	      encodedText.push_back(c); //Add the character to the string
+	      int txtSz = encodedText.size();
+	      if (encodedText[txtSz - 1] == 'D' && encodedText[txtSz - 2] == 'N' && encodedText[txtSz - 3] == 'E') break;
+	      //Keep reading until the string "END" is met
+	  }
 
-        for (int i = 0; i < 3; i++)
-        {
-            encodedText.pop_back();
-        }
+          for (int i = 0; i < 3; i++)
+              encodedText.pop_back(); //Pop "END" from the stream
 
-        while (getline(readHuffmanFile, readLine))
-        {
-            int p = 0;
-            string keyString, valueString;
-            keyString += readLine[0];
-            for (p = 1; p < readLine.size(); p++)
-            {
-                if (readLine[p] == '\t') break;
-                keyString += readLine[p];
-            }
+          // Read the map line by line
+          while (getline(readHuffmanFile, readLine))
+          {
+              int p = 0;
+              string keyString, valueString;
+              keyString += readLine[0]; //Read the first character
+              for (p = 1; p < readLine.size(); p++)
+              {
+                  if (readLine[p] == '\t') break; //Keep reading the key until you meet the tab delimiter
+                  keyString += readLine[p];
+              }
 
-            if (keyString == "\\n") keyString = "\n";
+              if (keyString == "\\n") keyString = "\n"; //Convert the "\n" string to a newline character
 
-            for (int i = p + 1; i < readLine.size(); i++)
-                valueString.push_back(readLine[i]);
+              for (int i = p + 1; i < readLine.size(); i++)
+                  valueString.push_back(readLine[i]); //Keep reading the rest of the value after the tab character
 
-            huffmanMapPair.first = keyString[0];
-            huffmanMapPair.second = valueString;
-            huffmanMapCodes.insert(huffmanMapPair);
-
+              huffmanMapPair.first = keyString[0];
+              huffmanMapPair.second = valueString;
+              huffmanMapCodes.insert(huffmanMapPair);
         }
     }
-
     else cout << "Couldn't open the file" << endl;
 
     readHuffmanFile.close();
@@ -154,12 +149,12 @@ string Decoder::decodeTextInFile(string fileLocation, string outputFileLocation)
     encodedText = compressor.asciitoBinaryStream(encodedText);
 //	cout << encodedText << endl;
 
-	map<char, string>::iterator it;
+    map<char, string>::iterator it;
 
 //	for (it = huffmanMapCodes.begin(); it != huffmanMapCodes.end(); it++)
 //	  cout << it->first << " => " << it->second << endl;
 
-	ofstream decodedFile(outputFileLocation);
-	decodedFile << decodeText(huffmanMapCodes, encodedText);
-	return decodeText(huffmanMapCodes, encodedText);
+    ofstream decodedFile(outputFileLocation);
+    decodedFile << decodeText(huffmanMapCodes, encodedText);
+    return decodeText(huffmanMapCodes, encodedText);
 }

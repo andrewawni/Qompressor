@@ -23,43 +23,40 @@ void Encoder::ConstructMap(node *n, string s)
 
 string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 {
-	StringCompressor compressor;
-	string inpuText;
-    ifstream uncompressedFile;
-    uncompressedFile.open(inputPath);
-    if (uncompressedFile.is_open())
-    {
-        char c;
-        while (uncompressedFile.get(c))
+        StringCompressor compressor;
+        string inpuText;
+        ifstream uncompressedFile;
+        uncompressedFile.open(inputPath);
+        if (uncompressedFile.is_open())
         {
-            inpuText.push_back(c);
+            char c;
+            while (uncompressedFile.get(c))
+                inpuText.push_back(c);
         }
-	}
+        else
+        {
+            cout << "Couldn't open the file" << endl;
+            return 0;
+        }
 
-	else
-	{
-        cout << "Couldn't open the file" << endl;
-		return 0;
-    }
-	uncompressedFile.close();
-    // priority queue custom compare function
-//    cout << inpuText;
-	struct compare
-	{
-
-		 bool operator()(node *l, node *r)
-		 {
-			 return (l->freq > r->freq);
-		 }
-	};
+        uncompressedFile.close();
+        // priority queue custom compare function
+        // cout << inpuText;
+        struct compare
+        {
+           bool operator()(node *l, node *r)
+           {
+             return (l->freq > r->freq);
+           }
+        };
 
 	string copyText = inpuText;
 	priority_queue<node *, vector<node *>, compare> HuffTree;
 	string encodedBits;
 	int textLen = inpuText.length();
 
-//	cout << "Text : " << inpuText << endl;
-//	cout << "Number of text bits : " << textLen << endl;
+	//cout << "Text : " << inpuText << endl;
+	//cout << "Number of text bits : " << textLen << endl;
 
 	//Getting frequencies of chars
 	for (int i = 0; i < inpuText.length(); i++)
@@ -74,7 +71,6 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 				j--;
 			}
 		}
-
 		string tmp;
 		tmp.push_back(inpuText[i]);
 		HuffTree.push(new node(tmp, freq));
@@ -110,17 +106,16 @@ string Encoder::encodeStringFromFile(string inputPath, string outputPath)
 
 	//Writing encoded bits to a file
 	//compressedFile<<encodedBits<<endl;
-    compressedFile << compressor.binaryStreamtoASCII(encodedBits);
-    compressedFile << "END" << endl;;
+	compressedFile << compressor.binaryStreamtoASCII(encodedBits);
+	compressedFile << "END" << endl;;
 
 	//Writing encoding map to a file
 	for (std::map<char, string>::iterator it = codeMap.begin(); it != codeMap.end(); ++it)
 	{
-        if (it->first != '\n')  compressedFile << it->first << '\t';
-        else compressedFile << "\\n" << '\t';
-        compressedFile << it->second <<endl;
-        //compressedFile << compressor.binaryStreamtoASCII(it->second) << endl;
-//        cout << it->first << " => " << it->second << '\n';
+	    if (it->first != '\n')  compressedFile << it->first << '\t';
+	    else compressedFile << "\\n" << '\t';
+	    compressedFile << it->second <<endl;
+	//  cout << it->first << " => " << it->second << '\n';
 	}
 
 	compressedFile.close();
